@@ -10,12 +10,13 @@ import { OtherPlayer } from './other-player/other-player';
 })
 export class AppComponent {
     otherPlayers: OtherPlayer[] = [
-        { name: 'Player1', cardValue: '3' },
-        { name: 'Player2', cardValue: '5' },
-        { name: 'Player3', cardValue: '?' },
+        { name: 'Player1', estimate: { cardValue: '3', isOutstanding: true } },
+        { name: 'Player2', estimate: { cardValue: '8', isOutstanding: true } },
+        { name: 'Player3', estimate: { cardValue: '5', isOutstanding: false } },
+        { name: 'Player4', estimate: { cardValue: '?', isOutstanding: true } }
     ];
 
     onCardSelected(cardValue: string) {
         console.log(cardValue);
-    }        
+    }
 }

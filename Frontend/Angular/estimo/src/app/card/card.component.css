@@ -15,13 +15,16 @@
     animation-name: slideForward;
     animation-fill-mode: forwards;
 }
+#card.outstanding {
+    background-color: red;
+}
 
 @keyframes slideForward {
     from {
-      top: 0px;
+        top: 0px;
     }
     to {
-      top: calc(0px - var(--height));
+        top: calc(0px - var(--height));
     }
 }
 

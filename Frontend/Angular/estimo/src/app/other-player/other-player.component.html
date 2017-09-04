@@ -1,4 +1,4 @@
 <div id="other-player">
     <div>{{otherPlayer.name}}</div>
-    <card [value]="otherPlayer.cardValue"></card>
+    <card [value]="otherPlayer.estimate?.cardValue" [isOutstanding]="otherPlayer.estimate?.isOutstanding"></card>
 </div>

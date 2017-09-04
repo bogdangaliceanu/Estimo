@@ -1,4 +1,4 @@
 export class OtherPlayer {
     name: string;
-    cardValue: string;
+    estimate: { cardValue: string; isOutstanding: boolean; }
 }
