@@ -7,7 +7,6 @@ import { Component, ViewEncapsulation, Input } from '@angular/core';
     encapsulation: ViewEncapsulation.Native
 })
 export class CardComponent {
-    @Input() public isSelected;
-
-    @Input() public value: string;
+    @Input() isSelected;
+    @Input() value: string;
 }

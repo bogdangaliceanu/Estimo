@@ -23,7 +23,7 @@
     to {
       top: calc(0px - var(--height));
     }
-  }
+}
 
 #filler {
     background-color: white;

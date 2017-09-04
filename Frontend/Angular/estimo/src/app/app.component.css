@@ -7,3 +7,16 @@ suite {
     position: absolute;
     bottom: 0px;
 }
+
+#other-players {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+other-player {
+    text-align: center;
+}
