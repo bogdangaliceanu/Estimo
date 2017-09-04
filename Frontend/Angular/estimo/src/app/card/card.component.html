@@ -1,5 +1,7 @@
-<div id="card" (click)="isSelected=true">
+<div id="card">
     <div id="filler" [class.selected]="isSelected">
-        <span id="value">{{value | cardvalue}}</span>
+        <div id="value-background">
+            <span id="value">{{value}}</span>
+        </div>
     </div>
 </div>

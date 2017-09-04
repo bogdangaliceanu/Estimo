@@ -1,7 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
-import { CardValue } from './card/card-value';
-
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
@@ -9,5 +7,7 @@ import { CardValue } from './card/card-value';
     encapsulation: ViewEncapsulation.Native
 })
 export class AppComponent {
-    cardValue = CardValue.infinity;
+    onCardSelected(cardValue: string) {
+        console.log(cardValue);
+    }        
 }
