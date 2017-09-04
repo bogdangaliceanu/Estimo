@@ -1,13 +1,29 @@
 #card {
     --color: green;
+    --height: 100px;
     background-color: var(--color);
     display: inline-block;
-    width: 80px;
-    height: 100px;
+    width: calc(0.8 * var(--height));
+    height: var(--height);
     display: flex;
     align-items: center;
     justify-content: center;
 }
+#card.selected {
+    position: relative;
+    animation-duration: 0.7s;
+    animation-name: slideForward;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideForward {
+    from {
+      top: 0px;
+    }
+    to {
+      top: calc(0px - var(--height));
+    }
+  }
 
 #filler {
     background-color: white;
@@ -16,9 +32,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-#filler.selected {
-    background-color: #D4EEFF;
 }
 
 #value-background {

@@ -1,0 +1,9 @@
+#app {
+    display: flex;
+    justify-content: center;
+}
+
+suite {
+    position: absolute;
+    bottom: 0px;
+}
