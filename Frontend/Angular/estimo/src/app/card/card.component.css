@@ -1,0 +1,30 @@
+#card {
+    --color: green;
+    background-color: var(--color);
+    display: inline-block;
+    width: 100px;
+    height: 125px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#filler {
+    background-color: white;
+    width: 90%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#filler.selected {
+    background-color: #D4EEFF;
+}
+
+#value {
+    padding: 0.5em;
+    background-color: var(--color);
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+}
