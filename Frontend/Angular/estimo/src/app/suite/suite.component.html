@@ -1,5 +1,5 @@
 <div id="suite">
     <card *ngFor="let cardValue of cardValues" [value]="cardValue"
-          [isSelected]="cardValue === selectedCardValue" (click)="onCardSelected(cardValue)">
+          [class.selected]="cardValue === selectedCardValue" (click)="onCardSelected(cardValue)">
     </card>
 </div>

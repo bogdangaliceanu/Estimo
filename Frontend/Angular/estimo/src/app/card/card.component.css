@@ -8,24 +8,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-#card.selected {
-    position: relative;
-    animation-duration: 0.7s;
-    animation-name: slideForward;
-    animation-fill-mode: forwards;
-}
-#card.outstanding {
-    background-color: red;
+    font-size: 20px;
 }
 
-@keyframes slideForward {
-    from {
-        top: 0px;
-    }
-    to {
-        top: calc(0px - var(--height));
-    }
+#card.outstanding {
+    background-color: red;
 }
 
 #filler {
@@ -50,5 +37,4 @@
 #value {
     padding: 0.5em;
     color: white;
-    font-size: 20px;
 }

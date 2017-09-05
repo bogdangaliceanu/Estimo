@@ -4,4 +4,19 @@
 
 card {
     margin: 2px;
+    /* height: 100px; */
+}
+card.selected {
+    position: relative;
+    animation-duration: 0.7s;
+    animation-name: slideForward;
+    animation-fill-mode: forwards;
+}
+@keyframes slideForward {
+    from {
+        top: 0px;
+    }
+    to {
+        top: -100px;
+    }
 }
