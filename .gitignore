@@ -16,6 +16,7 @@
 *.launch
 .settings/
 *.sublime-workspace
+.vs
 
 # IDE - VSCode
 .vscode/*
@@ -41,3 +42,10 @@ yarn-error.log
 # System Files
 .DS_Store
 Thumbs.db
+
+**/packages/*
+**/bin/*
+**/obj/*
+**/*.csproj.user
+**/Web.Release.config
+**/Web.Debug.config
