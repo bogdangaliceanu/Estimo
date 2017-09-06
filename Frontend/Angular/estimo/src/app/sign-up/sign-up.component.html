@@ -1,1 +1,25 @@
-sign up page
+<form (ngSubmit)="onSubmit()" #signUpForm="ngForm">
+    <div>
+        <label for="username">Username:</label>
+        <br />
+        <input [(ngModel)]="user.username" #usernameInput="ngModel" type="text" required pattern="[a-zA-Z0-9]+" id="username" name="username" />
+        <span class="validation" *ngIf="usernameInput.touched && usernameInput.errors?.required">Username field is required</span>
+        <span class="validation" *ngIf="usernameInput.touched && usernameInput.errors?.pattern">Username can only contain alphanumeric characters</span>
+    </div>
+    <br />
+    <div>
+        <label for="password">Password:</label>
+        <br />
+        <input [(ngModel)]="user.password" #passwordInput="ngModel" type="password" required id="password" name="password" />
+        <span class="validation" *ngIf="passwordInput.touched && passwordInput.errors?.required">Password field is required</span>
+    </div>
+    <br />
+    <div>
+        <label for="confirm-password">Confirm Password:</label>
+        <br />
+        <input type="password" [(ngModel)]="confirmedPassword" #confirmPasswordInput="ngModel" required id="confirm-password" name="confirm-password" />
+        <span class="validation" *ngIf="confirmPasswordInput.touched && confirmPasswordInput.value !== user.password">Confirmed password must match password</span>
+    </div>
+    <br />
+    <button type="submit" [disabled]="!signUpForm.form.valid">Submit</button>
+</form>
