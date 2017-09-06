@@ -21,7 +21,8 @@ namespace Estimo.Web
             var builder = new ContainerBuilder();
 
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            builder.RegisterInstance<IGameRepository>(new FileSystemGameRepository(ConfigurationManager.AppSettings["GameStorePath"])).SingleInstance();
+            builder.RegisterInstance<IGameRepository>(new FileSystemGameRepository(ConfigurationManager.AppSettings["GameDataPath"])).SingleInstance();
+            builder.RegisterInstance<IUserRepository>(new FileSystemUserRepository(ConfigurationManager.AppSettings["UserDataPath"])).SingleInstance();
 
             var container = builder.Build();
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
