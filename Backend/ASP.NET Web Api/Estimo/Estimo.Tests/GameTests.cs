@@ -27,7 +27,7 @@ namespace Estimo.Tests
             var game = new Game();
             game.NewRound("subj");
 
-            game.FinishCurrentRound();
+            game.FinishCurrentRound(EstimationValue.One);
 
             var round = game.Rounds.Single();
             Assert.Equal(true, round.FinishedAt.HasValue);
@@ -38,7 +38,7 @@ namespace Estimo.Tests
         {
             var game = new Game();
             game.NewRound("subj");
-            var e = new Estimation("2", "p1");
+            var e = new Estimation(EstimationValue.One, "p1");
             game.Estimate(e);
 
             var round = game.Rounds.Single();
@@ -64,7 +64,7 @@ namespace Estimo.Tests
 
             Assert.Throws(
                 typeof(InvalidOperationException),
-                () => game.Estimate(new Estimation("2", "p1"))
+                () => game.Estimate(new Estimation(EstimationValue.One, "p1"))
             );
         }
 
@@ -75,7 +75,7 @@ namespace Estimo.Tests
 
             Assert.Throws(
                 typeof(InvalidOperationException),
-                () => game.FinishCurrentRound()
+                () => game.FinishCurrentRound(EstimationValue.One)
             );
         }
     }

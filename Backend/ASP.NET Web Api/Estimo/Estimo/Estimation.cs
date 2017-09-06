@@ -4,18 +4,18 @@ namespace Estimo
 {
     public class Estimation
     {
-        public string CardValue { get; }
+        public EstimationValue Value { get; }
         public string Player { get; }
         public DateTimeOffset Timestamp { get; }
 
-        public Estimation(string cardValue, string player)
-            : this(cardValue, player, DateTimeOffset.Now)
+        public Estimation(EstimationValue value, string player)
+            : this(value, player, DateTimeOffset.Now)
         {
         }
 
-        public Estimation(string cardValue, string player, DateTimeOffset timestamp)
+        public Estimation(EstimationValue value, string player, DateTimeOffset timestamp)
         {
-            this.CardValue = cardValue;
+            this.Value = value;
             this.Player = player;
             this.Timestamp = timestamp;
         }

@@ -44,7 +44,7 @@ namespace Estimo
             currentRound.Estimate(estimation);
         }
 
-        public void FinishCurrentRound()
+        public void FinishCurrentRound(EstimationValue consensus)
         {
             var currentRound = this.rounds.LastOrDefault();
             if (currentRound == null)
@@ -52,7 +52,7 @@ namespace Estimo
                 throw new InvalidOperationException("No round is in progress");
             }
 
-            currentRound.Finish();
+            currentRound.Finish(consensus);
         }
     }
 }
