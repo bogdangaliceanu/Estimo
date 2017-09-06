@@ -30,7 +30,7 @@ namespace Estimo
             this.Consensus = consensus;
         }
 
-        public void Estimate(Estimation estimation)
+        internal void Estimate(Estimation estimation)
         {
             if (this.FinishedAt.HasValue)
             {
@@ -43,7 +43,7 @@ namespace Estimo
             this.estimations.Add(estimation.Player, estimation);
         }
 
-        public void Finish(EstimationValue consensus)
+        internal void Finish(EstimationValue consensus)
         {
             this.FinishedAt = DateTimeOffset.Now;
             this.Consensus = consensus;

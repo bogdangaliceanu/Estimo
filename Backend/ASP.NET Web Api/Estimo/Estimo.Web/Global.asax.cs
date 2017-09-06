@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Configuration;
+using System.Reflection;
 using System.Web.Http;
-using System.Web.Security;
-using System.Web.SessionState;
+using Autofac;
+using Autofac.Integration.WebApi;
 
 namespace Estimo.Web
 {
@@ -13,6 +12,19 @@ namespace Estimo.Web
         protected void Application_Start(object sender, EventArgs e)
         {
             GlobalConfiguration.Configure(config => config.MapHttpAttributeRoutes());
+
+            WireupContainer();
+        }
+
+        private static void WireupContainer()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterInstance<IGameRepository>(new FileSystemGameRepository(ConfigurationManager.AppSettings["GameStorePath"])).SingleInstance();
+
+            var container = builder.Build();
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
         }
 
         protected void Session_Start(object sender, EventArgs e)
