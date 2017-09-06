@@ -1,6 +1,9 @@
-<div id="app">
-    <div id="other-players">
-        <other-player *ngFor="let otherPlayer of otherPlayers" [otherPlayer]="otherPlayer"></other-player>
+<nav>
+    <button id="home-button" routerLink="/home">Home</button>
+    <div id="auth">
+        <button id="login-button" routerLink="/login">Log in</button>
+        <button id="signup-button" routerLink="/signup">Sign up</button>
     </div>
-    <suite (cardSelected)="onCardSelected($event)"></suite>
-</div>
+</nav>
+
+<router-outlet></router-outlet>

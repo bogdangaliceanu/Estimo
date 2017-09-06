@@ -1,22 +1,14 @@
-#app {
+nav {
     display: flex;
-    justify-content: center;
-}
-
-suite {
-    position: absolute;
-    bottom: 0px;
-}
-
-#other-players {
+    justify-content: space-between;
     width: 100%;
-    position: absolute;
-    top: 0px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    background-color: gray;
+    padding: 5px;
+}
+/* #home-button {
+    margin: 0 auto;
 }
 
-other-player {
-    text-align: center;
-}
+#auth {
+
+} */

@@ -1,0 +1,6 @@
+<div id="table">
+    <div id="other-players">
+        <other-player *ngFor="let otherPlayer of otherPlayers" [otherPlayer]="otherPlayer"></other-player>
+    </div>
+    <suite (cardSelected)="onCardSelected($event)"></suite>
+</div>
