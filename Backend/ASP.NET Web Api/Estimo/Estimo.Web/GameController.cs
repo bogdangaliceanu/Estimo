@@ -6,6 +6,7 @@ using System.Web.Http;
 
 namespace Estimo.Web
 {
+    [Authenticated]
     public class GameController : ApiController
     {
         private readonly IGameRepository gameRepository;

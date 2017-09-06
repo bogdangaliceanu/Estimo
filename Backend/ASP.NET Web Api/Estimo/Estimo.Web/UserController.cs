@@ -1,20 +1,23 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace Estimo.Web
 {
     public class UserController : ApiController
     {
         private readonly IUserRepository userRepository;
+        private readonly AuthTokenManager authTokenManager;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, AuthTokenManager authTokenManager)
         {
             this.userRepository = userRepository;
+            this.authTokenManager = authTokenManager;
         }
 
         [HttpPost, Route("signup")]
@@ -52,7 +55,12 @@ namespace Estimo.Web
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            var authToken = Guid.NewGuid().ToString();
+            this.authTokenManager.Set(user.Username, authToken);
+
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Headers.Add("X-Auth-Token", authToken);
+            return response;
         }
 
         private static string HashPassword(string password)

@@ -13,6 +13,8 @@ import { LogInComponent } from './log-in/log-in.component';
 import { AppRoutingModule } from './app-routing.module';
 import { userServiceToken } from './user.service';
 import { HttpUserService } from './http-user.service';
+import { authServiceToken } from './auth.service';
+import { SessionStorageAuthService } from './session-storage-auth.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,10 @@ import { HttpUserService } from './http-user.service';
     FormsModule,
     HttpModule
   ],
-  providers: [{ provide: userServiceToken, useClass: HttpUserService }],
+  providers: [
+    { provide: userServiceToken, useClass: HttpUserService },
+    { provide: authServiceToken, useClass: SessionStorageAuthService }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

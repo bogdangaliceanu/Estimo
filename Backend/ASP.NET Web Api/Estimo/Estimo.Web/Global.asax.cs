@@ -11,9 +11,9 @@ namespace Estimo.Web
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            GlobalConfiguration.Configure(config => config.MapHttpAttributeRoutes());
-
             WireupContainer();
+
+            GlobalConfiguration.Configure(config => config.MapHttpAttributeRoutes());
         }
 
         private static void WireupContainer()
@@ -21,8 +21,10 @@ namespace Estimo.Web
             var builder = new ContainerBuilder();
 
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterWebApiFilterProvider(GlobalConfiguration.Configuration);
             builder.RegisterInstance<IGameRepository>(new FileSystemGameRepository(ConfigurationManager.AppSettings["GameDataPath"])).SingleInstance();
             builder.RegisterInstance<IUserRepository>(new FileSystemUserRepository(ConfigurationManager.AppSettings["UserDataPath"])).SingleInstance();
+            builder.RegisterInstance<AuthTokenManager>(new AuthTokenManager()).SingleInstance();
 
             var container = builder.Build();
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);

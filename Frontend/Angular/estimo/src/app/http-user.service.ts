@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import { UserService } from './user.service';
+import { UserService, LoginResult } from './user.service';
 import { User } from './user';
 
 @Injectable()
@@ -17,13 +17,24 @@ export class HttpUserService implements UserService {
             if (e.status == 409) {
                 return 'This username already belongs to someone else';
             }
-            if (e.status == 500) {
-                return 'An error has occured';
-            }
+            return 'An error has occured';
         }
     }
 
-    logIn(user: User): Promise<string> {
-        throw new Error("Method not implemented.");
+    async logIn(user: User): Promise<LoginResult> {
+        try {
+            const response = await this.http.post('http://localhost/Estimo.Web/login', user).toPromise();
+            const authToken = response.headers.get('X-Auth-Token');
+            if (!authToken) {
+                return { kind: 'failure', message: 'Did not receive an auth token' };
+            }
+            return { kind: 'success', authToken: authToken };
+        }
+        catch (e) {
+            if (e.status == 401) {
+                return { kind: 'failure', message: 'Username/password combination is invalid' };
+            }
+            return { kind: 'failure', message: 'An error has occured' };
+        }
     }
 }
