@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
+import { environment } from '../environments/environment';
 import { UserService, LoginResult } from './user.service';
 import { User } from './user';
 
@@ -11,7 +12,7 @@ export class HttpUserService implements UserService {
 
     async signUp(user: User): Promise<string> {
         try {
-            await this.http.post('http://localhost/Estimo.Web/signup', user).toPromise();
+            await this.http.post(environment.backendUrl + 'signup', user).toPromise();
         }
         catch (e) {
             if (e.status == 409) {
@@ -23,7 +24,7 @@ export class HttpUserService implements UserService {
 
     async logIn(user: User): Promise<LoginResult> {
         try {
-            const response = await this.http.post('http://localhost/Estimo.Web/login', user).toPromise();
+            const response = await this.http.post(environment.backendUrl + 'login', user).toPromise();
             const authToken = response.headers.get('X-Auth-Token');
             if (!authToken) {
                 return { kind: 'failure', message: 'Did not receive an auth token' };
