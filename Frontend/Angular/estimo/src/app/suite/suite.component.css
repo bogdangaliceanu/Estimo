@@ -3,8 +3,16 @@
 }
 
 card {
+    --color: green;
+    --height: 100px;
+    --width: calc(0.8 * var(--height));
+    --font-size: 20px;
+    --text-color: white;
+    cursor: pointer;
     margin: 2px;
-    /* height: 100px; */
+}
+card.outstanding {
+    --color: red;
 }
 card.selected {
     position: relative;
@@ -17,6 +25,6 @@ card.selected {
         top: 0px;
     }
     to {
-        top: -100px;
+        top: calc(0px - var(--height));
     }
 }

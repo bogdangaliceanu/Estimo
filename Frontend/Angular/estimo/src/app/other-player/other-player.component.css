@@ -1,0 +1,9 @@
+card {
+    --color: green;
+    --height: 100px;
+    --width: calc(0.8 * var(--height));
+    --font-size: 20px;
+}
+card.outstanding {
+    --color: red;
+}

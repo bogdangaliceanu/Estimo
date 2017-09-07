@@ -7,6 +7,5 @@ import { Component, ViewEncapsulation, Input } from '@angular/core';
     encapsulation: ViewEncapsulation.Native
 })
 export class CardComponent {
-    @Input() isOutstanding: boolean;
     @Input() value: string;
 }
