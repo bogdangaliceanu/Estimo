@@ -3,8 +3,9 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { environment } from '../environments/environment';
-import { UserService, LoginResult } from './user.service';
+import { UserService } from './user.service';
 import { User } from './user';
+import { Result } from './result';
 
 @Injectable()
 export class HttpUserService implements UserService {
@@ -22,20 +23,18 @@ export class HttpUserService implements UserService {
         }
     }
 
-    async logIn(user: User): Promise<LoginResult> {
+    async logIn(user: User): Promise<Result<{ authToken: string }, string>> {
         try {
             const response = await this.http.post(environment.backendUrl + 'login', user).toPromise();
             const authToken = response.headers.get('X-Auth-Token');
-            if (!authToken) {
-                return { kind: 'failure', message: 'Did not receive an auth token' };
-            }
-            return { kind: 'success', authToken: authToken };
+            
+            return { kind: 'success', data: { authToken: authToken } };
         }
         catch (e) {
             if (e.status == 401) {
-                return { kind: 'failure', message: 'Username/password combination is invalid' };
+                return { kind: 'failure', data: 'Username/password combination is invalid' };
             }
-            return { kind: 'failure', message: 'An error has occured' };
+            return { kind: 'failure', data: 'An error has occured' };
         }
     }
 }

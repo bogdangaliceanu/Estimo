@@ -1,1 +1,3 @@
 <div>Welcome to estimo!</div>
+<br />
+<button *ngIf="authService.authToken" (click)="newGame()">New game</button>

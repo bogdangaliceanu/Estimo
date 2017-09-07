@@ -1,6 +1,6 @@
 <nav>
     <button id="home-button" routerLink="/home">Home</button>
-    <div id="auth">
+    <div id="auth" *ngIf="!authService.authToken">
         <button id="login-button" routerLink="/login">Log in</button>
         <button id="signup-button" routerLink="/signup">Sign up</button>
     </div>

@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { AuthService, authServiceToken } from '../auth.service';
 import { UserService, userServiceToken } from '../user.service';
@@ -17,17 +17,32 @@ export class LogInComponent {
     constructor(
         @Inject(userServiceToken) private userService: UserService,
         @Inject(authServiceToken) private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute
     ) {}
 
     async onSubmit() {
         const result = await this.userService.logIn(this.user);
         if (result.kind === 'failure') {
-            alert(result.message);
+            alert(result.data);
         }
         else {
-            this.authService.authToken = result.authToken;
-            this.router.navigate(['/home']);
+            this.authService.authToken = result.data.authToken;
+            await this.goToNextPage();
         }
+    }
+
+    async goToNextPage() {
+        const nextUrl = this.getNextUrl();
+        if (nextUrl) {
+            setTimeout(() => this.router.navigateByUrl(nextUrl), 0);
+        }
+        this.router.navigate(['/home']);
+    }
+
+    getNextUrl() {
+        let nextUrl: string;        
+        this.route.paramMap.subscribe(pm => nextUrl = pm.get('nextUrl')).unsubscribe();
+        return nextUrl;
     }
 }

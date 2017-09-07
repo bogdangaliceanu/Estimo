@@ -1,6 +1,6 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, Inject } from '@angular/core';
 
-import { OtherPlayer } from './other-player/other-player';
+import { AuthService, authServiceToken } from './auth.service';
 
 @Component({
     selector: 'app',
@@ -9,14 +9,5 @@ import { OtherPlayer } from './other-player/other-player';
     encapsulation: ViewEncapsulation.Native
 })
 export class AppComponent {
-    otherPlayers: OtherPlayer[] = [
-        { name: 'Player1', estimate: { cardValue: '3', isOutstanding: true } },
-        { name: 'Player2', estimate: { cardValue: '8', isOutstanding: true } },
-        { name: 'Player3', estimate: { cardValue: '5', isOutstanding: false } },
-        { name: 'Player4', estimate: { cardValue: '?', isOutstanding: true } }
-    ];
-
-    onCardSelected(cardValue: string) {
-        console.log(cardValue);
-    }
+    constructor(@Inject(authServiceToken) private authService: AuthService) {}
 }

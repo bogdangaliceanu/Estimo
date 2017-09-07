@@ -8,14 +8,15 @@ namespace Estimo.Web
 
         public void Set(string username, string token)
         {
-            this.userTokens[username] = token;
+            this.userTokens[username] = token.ToLowerInvariant();
         }
 
         public string GetUser(string token)
         {
+            var tokenLower = token.ToLowerInvariant();
             foreach (var kv in userTokens)
             {
-                if (kv.Value == token)
+                if (kv.Value == tokenLower)
                 {
                     return kv.Key;
                 }

@@ -1,22 +1,11 @@
 import { InjectionToken } from '@angular/core';
 
 import { User } from './user';
-
-interface Failure {
-    kind: 'failure';
-    message: string;
-}
-
-interface Success {
-    kind: 'success';
-    authToken: string;
-}
-
-export type LoginResult = Failure | Success;
+import { Result } from './result';
 
 export interface UserService {
     signUp(user: User): Promise<string>;
-    logIn(user: User): Promise<LoginResult>;
+    logIn(user: User): Promise<Result<{ authToken: string }, string>>;
 }
 
 export const userServiceToken = new InjectionToken<UserService>('UserService');

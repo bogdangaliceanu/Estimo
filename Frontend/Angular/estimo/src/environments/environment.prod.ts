@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  backendUrl: 'http://localhost/Estimo.Web/'
+    production: true,
+    backendUrl: 'http://localhost/Estimo.Web/'
 };
