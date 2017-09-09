@@ -4,7 +4,8 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 
 import { OtherPlayer } from '../other-player/other-player';
-import { AuthService, authServiceToken } from '../auth.service';
+import { DialogService, dialogServiceToken } from '../dialog.service';
+import { GameService, gameServiceToken } from './game.service';
 
 @Component({
     selector: 'game-table',
@@ -14,6 +15,7 @@ import { AuthService, authServiceToken } from '../auth.service';
 })
 export class GameTableComponent implements OnInit {
     private gameId: string;
+    currentSubject: string;
     currentPlayerEstimation: string;
     readonly cardValues = ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', '∞', '?'];
     @Input() isEstimationMade: boolean;
@@ -23,11 +25,12 @@ export class GameTableComponent implements OnInit {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        @Inject(authServiceToken) private authService: AuthService
+        @Inject(dialogServiceToken) private dialogService: DialogService,
+        @Inject(gameServiceToken) private gameService: GameService
     ) {}
 
-    async ngOnInit() {
-        this.gameId = await this.getGameId();
+    ngOnInit() {
+        this.route.paramMap.subscribe(pm => this.gameId = pm.get('id')).unsubscribe();
     }
 
     getGameId() {
@@ -63,5 +66,16 @@ export class GameTableComponent implements OnInit {
 
     onDragEnd(ev: DragEvent) {
         this.cardBeingDragged = null;
+    }
+
+    async newRound() {
+        const subject = await this.dialogService.prompt('What are you estimating?');
+        const result = await this.gameService.newRound(this.gameId, subject);
+        if (result.kind === "success") {
+            this.currentSubject = subject;
+        }
+        else {
+            await this.dialogService.alert(result.data);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -19,12 +20,31 @@ namespace Estimo.Web
         [HttpPost, Route("game")]
         public async Task<HttpResponseMessage> NewGame()
         {
-            var game = new Game();
+            var player = Thread.CurrentPrincipal.Identity.Name;
+            var game = new Game(player);
             await gameRepository.Add(game).ConfigureAwait(false);
 
             var response = new HttpResponseMessage(HttpStatusCode.Created);
             response.Headers.Location = new Uri(game.Id.ToString(), UriKind.Relative);
             return response;
+        }
+
+        [HttpPost, Route("game/{id:guid}/round")]
+        public async Task<HttpResponseMessage> NewRound(Guid id, [FromBody] RoundModel roundModel)
+        {
+            var game = await gameRepository.Get(id).ConfigureAwait(false);
+            var player = Thread.CurrentPrincipal.Identity.Name;
+
+            if (game.NewRound(roundModel.Subject, player) is Failure<string> f)
+            {
+                return new HttpResponseMessage(HttpStatusCode.Forbidden)
+                {
+                    Content = new StringContent(f.Data)
+                };
+            }
+        
+            await gameRepository.Update(game).ConfigureAwait(false);
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
         [HttpGet, Route("game/{id:guid}")]

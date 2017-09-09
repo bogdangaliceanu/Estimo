@@ -1,3 +1,7 @@
+<div id="game-info">
+    <button (click)="newRound()">New round</button>
+    Current subject: {{currentSubject}}
+</div>
 <div id="table">
     <div id="other-players">
         <other-player *ngFor="let otherPlayer of otherPlayers" [otherPlayer]="otherPlayer"></other-player>
