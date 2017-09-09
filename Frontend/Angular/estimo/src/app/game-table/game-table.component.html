@@ -8,12 +8,12 @@
     </div>
     <div id="current-player-area">
         <div id="suite">
-            <card *ngFor="let cardValue of cardValues" [value]="cardValue"
-                  [draggable]="!isEstimationMade" (dragstart)="onDragStart($event, cardValue)" (dragend)="onDragEnd($event)">
+            <card *ngFor="let cardValue of cardValues" [value]="cardValue.value" [text]="cardValue.text"
+                  [draggable]="!currentPlayerEstimation" (dragstart)="onDragStart($event, cardValue.value)">
             </card>
         </div>
         <div id="card-slot-area" #cardSlotArea>
-            <card-slot *ngIf="!isEstimationMade" title="Drag & drop a card here"
+            <card-slot *ngIf="!currentPlayerEstimation" title="Drag & drop a card here"
                        (drop)="onCardSelected($event, cardSlotArea)" (dragover)="allowDrop($event)">
             </card-slot>
         </div>

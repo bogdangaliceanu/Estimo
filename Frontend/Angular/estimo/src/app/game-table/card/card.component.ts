@@ -1,5 +1,7 @@
 import { Component, ViewEncapsulation, Input } from '@angular/core';
 
+import { EstimationValue } from '../estimation-value';
+
 @Component({
     selector: 'card',
     templateUrl: './card.component.html',
@@ -7,5 +9,6 @@ import { Component, ViewEncapsulation, Input } from '@angular/core';
     encapsulation: ViewEncapsulation.Native
 })
 export class CardComponent {
-    @Input() value: string;
+    @Input() value: EstimationValue;
+    @Input() text: string;
 }

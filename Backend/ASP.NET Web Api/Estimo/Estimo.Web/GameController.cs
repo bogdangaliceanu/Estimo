@@ -47,6 +47,26 @@ namespace Estimo.Web
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
+        [HttpPost, Route("game/{id:guid}/estimation")]
+        public async Task<HttpResponseMessage> Estimate(Guid id, [FromBody] EstimationModel estimationModel)
+        {
+            var game = await gameRepository.Get(id).ConfigureAwait(false);
+            var player = Thread.CurrentPrincipal.Identity.Name;
+
+            var estimation = new Estimation(estimationModel.Value, player);
+
+            if (game.Estimate(estimation) is Failure<string> f)
+            {
+                return new HttpResponseMessage(HttpStatusCode.Forbidden)
+                {
+                    Content = new StringContent(f.Data)
+                };
+            }
+
+            await gameRepository.Update(game).ConfigureAwait(false);
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
+
         [HttpGet, Route("game/{id:guid}")]
         public Task<Game> GetGame(Guid id)
         {

@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="AuthenticatedAttribute.cs" />
     <Compile Include="AuthTokenManager.cs" />
+    <Compile Include="EstimationModel.cs" />
     <Compile Include="FileSystemGameRepository.cs" />
     <Compile Include="FileSystemUserRepository.cs" />
     <Compile Include="GameController.cs" />

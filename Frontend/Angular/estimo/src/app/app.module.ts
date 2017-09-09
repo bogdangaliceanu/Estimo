@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { CardComponent } from './card/card.component';
-import { CardSlotComponent } from './card-slot/card-slot.component';
-import { OtherPlayerComponent } from './other-player/other-player.component';
+import { CardComponent } from './game-table/card/card.component';
+import { CardSlotComponent } from './game-table/card-slot/card-slot.component';
+import { OtherPlayerComponent } from './game-table/other-player/other-player.component';
 import { HomeComponent } from './home/home.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LogInComponent } from './log-in/log-in.component';
