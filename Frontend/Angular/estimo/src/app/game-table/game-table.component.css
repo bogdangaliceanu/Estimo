@@ -1,22 +1,38 @@
 #table {
+    height: 100%;
     display: flex;
-    justify-content: center;
-}
-
-suite {
-    position: absolute;
-    bottom: 0px;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 #other-players {
-    width: 100%;
-    position: absolute;
-    top: 0px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    overflow-x: auto;
 }
 
 other-player {
     text-align: center;
+}
+
+suite {
+    flex: 3;
+}
+
+#card-slot-area {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+card-slot {
+    --height: 100px;
+    --width: calc(0.8 * var(--height));
+    --font-size: 20px;
+}
+
+#current-player-area {
+    display: flex;
 }

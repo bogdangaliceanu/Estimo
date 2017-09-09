@@ -2,5 +2,10 @@
     <div id="other-players">
         <other-player *ngFor="let otherPlayer of otherPlayers" [otherPlayer]="otherPlayer"></other-player>
     </div>
-    <suite (cardSelected)="onCardSelected($event)"></suite>
+    <div id="current-player-area">
+        <suite (cardSelected)="onCardSelected($event)"></suite>
+        <div id="card-slot-area">
+            <card-slot title="Drag & drop a card here"></card-slot>
+        </div>
+    </div>
 </div>

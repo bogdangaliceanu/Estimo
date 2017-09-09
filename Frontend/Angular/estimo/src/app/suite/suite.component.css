@@ -1,5 +1,7 @@
 #suite {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 card {
@@ -13,18 +15,4 @@ card {
 }
 card.outstanding {
     --color: red;
-}
-card.selected {
-    position: relative;
-    animation-duration: 0.7s;
-    animation-name: slideForward;
-    animation-fill-mode: forwards;
-}
-@keyframes slideForward {
-    from {
-        top: 0px;
-    }
-    to {
-        top: calc(0px - var(--height));
-    }
 }

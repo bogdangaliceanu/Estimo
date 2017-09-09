@@ -1,0 +1,19 @@
+#card {
+    border: 2px dashed var(--color, black);
+    width: var(--width);
+    height: var(--height);
+    font-size: var(--font-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#value-background {
+    border: 2px dashed var(--color, black);
+    border-radius: 50%;
+    width: 50%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
