@@ -6,7 +6,6 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { CardComponent } from './card/card.component';
 import { CardSlotComponent } from './card-slot/card-slot.component';
-import { SuiteComponent } from './suite/suite.component';
 import { OtherPlayerComponent } from './other-player/other-player.component';
 import { HomeComponent } from './home/home.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -25,7 +24,6 @@ import { AuthGuardService } from './auth-guard.service';
     declarations: [
         AppComponent,
         CardComponent,
-        SuiteComponent,
         OtherPlayerComponent,
         HomeComponent,
         SignUpComponent,

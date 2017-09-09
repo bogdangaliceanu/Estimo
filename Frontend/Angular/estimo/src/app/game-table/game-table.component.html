@@ -3,9 +3,15 @@
         <other-player *ngFor="let otherPlayer of otherPlayers" [otherPlayer]="otherPlayer"></other-player>
     </div>
     <div id="current-player-area">
-        <suite (cardSelected)="onCardSelected($event)"></suite>
-        <div id="card-slot-area">
-            <card-slot title="Drag & drop a card here"></card-slot>
+        <div id="suite">
+            <card *ngFor="let cardValue of cardValues" [value]="cardValue"
+                  [draggable]="!isEstimationMade" (dragstart)="onDragStart($event, cardValue)" (dragend)="onDragEnd($event)">
+            </card>
+        </div>
+        <div id="card-slot-area" #cardSlotArea>
+            <card-slot *ngIf="!isEstimationMade" title="Drag & drop a card here"
+                       (drop)="onCardSelected($event, cardSlotArea)" (dragover)="allowDrop($event)">
+            </card-slot>
         </div>
     </div>
 </div>

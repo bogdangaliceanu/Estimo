@@ -16,10 +16,6 @@ other-player {
     text-align: center;
 }
 
-suite {
-    flex: 3;
-}
-
 #card-slot-area {
     flex: 1;
     display: flex;
@@ -35,4 +31,26 @@ card-slot {
 
 #current-player-area {
     display: flex;
+}
+
+#suite {
+    flex: 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+card {
+    --color: green;
+    --height: 100px;
+    --width: calc(0.8 * var(--height));
+    --font-size: 20px;
+    --text-color: white;
+    margin: 2px;
+}
+card[draggable=true] {
+    cursor: pointer;
+}
+card.outstanding {
+    --color: red;
 }

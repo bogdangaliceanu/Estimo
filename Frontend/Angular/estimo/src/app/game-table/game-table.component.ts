@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, Inject } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, Inject, Input } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
@@ -14,6 +14,11 @@ import { AuthService, authServiceToken } from '../auth.service';
 })
 export class GameTableComponent implements OnInit {
     private gameId: string;
+    currentPlayerEstimation: string;
+    readonly cardValues = ['0', '1/2', '1', '2', '3', '5', '8', '13', '20', '40', '100', '∞', '?'];
+    @Input() isEstimationMade: boolean;
+    selectedCardValue: string;
+    cardBeingDragged: HTMLElement;
 
     constructor(
         private router: Router,
@@ -40,6 +45,23 @@ export class GameTableComponent implements OnInit {
         { name: 'Player4', estimate: { cardValue: '?', isOutstanding: true } }
     ];
 
-    onCardSelected(cardValue: string) {
+    onCardSelected(ev: DragEvent, cardSlotArea: HTMLElement) {
+        const cardValue = ev.dataTransfer.getData('text');
+        this.currentPlayerEstimation = cardValue;
+        cardSlotArea.appendChild(this.cardBeingDragged);
+        this.isEstimationMade = true;
+    }
+
+    allowDrop(ev: DragEvent) {
+        ev.preventDefault();
+    }
+
+    onDragStart(ev: DragEvent, cardValue: string) {
+        ev.dataTransfer.setData("text", cardValue);
+        this.cardBeingDragged = ev.target as HTMLElement;
+    }
+
+    onDragEnd(ev: DragEvent) {
+        this.cardBeingDragged = null;
     }
 }

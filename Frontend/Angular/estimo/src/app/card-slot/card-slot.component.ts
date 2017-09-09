@@ -6,6 +6,4 @@ import { Component, ViewEncapsulation } from '@angular/core';
     styleUrls: ['card-slot.component.css'],
     encapsulation: ViewEncapsulation.Native
 })
-export class CardSlotComponent {
-    
-}
+export class CardSlotComponent {}
