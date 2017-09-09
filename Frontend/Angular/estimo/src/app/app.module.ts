@@ -18,6 +18,8 @@ import { authServiceToken } from './auth.service';
 import { SessionStorageAuthService } from './session-storage-auth.service';
 import { gameServiceToken } from './game-table/game.service';
 import { HttpGameService } from './game-table/http-game.service';
+import { dialogServiceToken } from './dialog.service';
+import { BrowserDialogService } from './browser-dialog.service';
 import { AuthGuardService } from './auth-guard.service';
 
 @NgModule({
@@ -41,6 +43,7 @@ import { AuthGuardService } from './auth-guard.service';
         { provide: userServiceToken, useClass: HttpUserService },
         { provide: authServiceToken, useClass: SessionStorageAuthService },
         { provide: gameServiceToken, useClass: HttpGameService },
+        { provide: dialogServiceToken, useClass: BrowserDialogService },
         AuthGuardService
     ],
     bootstrap: [AppComponent]

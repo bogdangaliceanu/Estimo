@@ -1,8 +1,9 @@
 <nav>
     <button id="home-button" routerLink="/home">Home</button>
-    <div id="auth" *ngIf="!authService.authToken">
-        <button id="login-button" routerLink="/login">Log in</button>
-        <button id="signup-button" routerLink="/signup">Sign up</button>
+    <div id="auth">
+        <button *ngIf="!authService.authToken" routerLink="/login">Log in</button>
+        <button *ngIf="!authService.authToken" routerLink="/signup">Sign up</button>
+        <button *ngIf="authService.authToken" (click)="logOut()" routerLink="/home">Log out</button>
     </div>
 </nav>
 

@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { DialogService, dialogServiceToken } from '../dialog.service';
 import { UserService, userServiceToken } from '../user.service';
 import { User } from '../user';
 
@@ -14,6 +15,7 @@ export class SignUpComponent {
     readonly user = new User('', '');
 
     constructor(
+        @Inject(dialogServiceToken) private dialogService: DialogService,
         @Inject(userServiceToken) private userService: UserService,
         private router: Router
     ) {}
@@ -21,7 +23,7 @@ export class SignUpComponent {
     async onSubmit() {
         const error = await this.userService.signUp(this.user);
         if (error) {
-            alert(error);
+            await this.dialogService.alert(error);
         }
         else {
             this.router.navigate(['/login']);

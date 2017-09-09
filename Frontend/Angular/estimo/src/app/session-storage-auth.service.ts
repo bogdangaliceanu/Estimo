@@ -9,6 +9,11 @@ export class SessionStorageAuthService implements AuthService {
     }
 
     set authToken(value: string) {
-        sessionStorage.setItem('authToken', value);
+        if (!value) {
+            sessionStorage.removeItem('authToken');
+        }
+        else {
+            sessionStorage.setItem('authToken', value);
+        }
     }
 }

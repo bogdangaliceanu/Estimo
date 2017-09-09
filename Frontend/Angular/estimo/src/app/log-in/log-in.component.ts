@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
+import { DialogService, dialogServiceToken } from '../dialog.service';
 import { AuthService, authServiceToken } from '../auth.service';
 import { UserService, userServiceToken } from '../user.service';
 import { User } from '../user';
@@ -15,6 +16,7 @@ export class LogInComponent {
     readonly user = new User('', '');
 
     constructor(
+        @Inject(dialogServiceToken) private dialogService: DialogService,
         @Inject(userServiceToken) private userService: UserService,
         @Inject(authServiceToken) private authService: AuthService,
         private router: Router,
@@ -24,7 +26,7 @@ export class LogInComponent {
     async onSubmit() {
         const result = await this.userService.logIn(this.user);
         if (result.kind === 'failure') {
-            alert(result.data);
+            await this.dialogService.alert(result.data);
         }
         else {
             this.authService.authToken = result.data.authToken;

@@ -10,4 +10,8 @@ import { AuthService, authServiceToken } from './auth.service';
 })
 export class AppComponent {
     constructor(@Inject(authServiceToken) private authService: AuthService) {}
+
+    logOut() {
+        this.authService.authToken = null;
+    }
 }
