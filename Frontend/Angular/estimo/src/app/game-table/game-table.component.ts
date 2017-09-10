@@ -43,15 +43,13 @@ export class GameTableComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.route.paramMap.subscribe(pm => this.gameId = pm.get('id')).unsubscribe();
+        this.gameId = this.getGameId();
     }
 
     getGameId() {
-        return this.route.paramMap
-            .switchMap((params: ParamMap) => {
-                return params.get('id');
-            })
-            .toPromise();
+        let gameId: string;
+        this.route.paramMap.subscribe(pm => gameId = pm.get('id')).unsubscribe();
+        return gameId;
     }
 
     otherPlayers: OtherPlayer[] = [
@@ -90,7 +88,7 @@ export class GameTableComponent implements OnInit {
             subject = await this.dialogService.prompt('What are you estimating?');
         }
         while(!subject);
-        
+
         const result = await this.gameService.newRound(this.gameId, subject);
         if (result.kind === "success") {
             this.currentSubject = subject;
