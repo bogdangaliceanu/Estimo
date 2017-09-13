@@ -1,21 +1,26 @@
-<div id="game-info">
-    <button (click)="newRound()">New round</button>
-    Current subject: {{currentSubject}}
+<div id="game-dashboard">
+    <div id="round-management-container">
+        <button (click)="newRound()">New round</button>
+        <button (click)="finishRound()">Finish round</button>
+    </div>
+    <div class="round" *ngFor="let round of game?.rounds" (click)="selectedRound = round">
+        {{round.subject}}
+    </div>
 </div>
 <div id="table">
     <div id="other-players">
         <other-player *ngFor="let otherPlayer of otherPlayers" [otherPlayer]="otherPlayer"></other-player>
     </div>
     <div id="current-player-area">
-        <div id="suite">
-            <card *ngFor="let cardValue of cardValues" [value]="cardValue.value" [text]="cardValue.text"
-                  [draggable]="!currentPlayerEstimation" (dragstart)="onDragStart($event, cardValue.value)">
-            </card>
-        </div>
         <div id="card-slot-area" #cardSlotArea>
-            <card-slot *ngIf="!currentPlayerEstimation" title="Drag & drop a card here"
-                       (drop)="onCardSelected($event, cardSlotArea)" (dragover)="allowDrop($event)">
+            <card-slot *ngIf="!currentPlayerEstimation" title="Drag & drop a card here" (drop)="onCardSelected($event, cardSlotArea)"
+                (dragover)="allowDrop($event)">
             </card-slot>
+        </div>
+        <div id="suite">
+            <card *ngFor="let cardValue of cardValues" [value]="cardValue.value" [text]="cardValue.text" [draggable]="!currentPlayerEstimation"
+                (dragstart)="onDragStart($event, cardValue.value)">
+            </card>
         </div>
     </div>
 </div>

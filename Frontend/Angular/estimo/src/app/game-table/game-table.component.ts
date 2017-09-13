@@ -17,6 +17,7 @@ import { Game, Round, Estimation, EstimationValue } from './game';
 export class GameTableComponent implements OnInit {
     private gameId: string;
     game: Game;
+    selectedRound: Round;
     currentSubject: string;
     currentPlayerEstimation: EstimationValue;
     otherPlayers: OtherPlayer[] = [

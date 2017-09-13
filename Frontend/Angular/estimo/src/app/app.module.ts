@@ -11,7 +11,6 @@ import { HomeComponent } from './home/home.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { GameTableComponent } from './game-table/game-table.component';
-import { GameDashboardComponent } from './game-table/game-dashboard/game-dashboard.component';
 import { AppRoutingModule } from './app-routing.module';
 import { userServiceToken } from './user.service';
 import { HttpUserService } from './http-user.service';
@@ -32,8 +31,7 @@ import { AuthGuardService } from './auth-guard.service';
         SignUpComponent,
         LogInComponent,
         GameTableComponent,
-        CardSlotComponent,
-        GameDashboardComponent
+        CardSlotComponent
     ],
     imports: [
         BrowserModule,

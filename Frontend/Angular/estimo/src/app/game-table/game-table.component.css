@@ -1,8 +1,15 @@
+:host {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 1fr;
+}
+
 #table {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    grid-column: 2 / 3;
 }
 
 #other-players {
@@ -17,7 +24,7 @@ other-player {
 }
 
 #card-slot-area {
-    flex: 1;
+    flex-basis: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,18 +33,20 @@ other-player {
 card-slot {
     --height: 100px;
     --width: calc(0.8 * var(--height));
-    --font-size: 20px;
 }
 
 #current-player-area {
     display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 #suite {
-    flex: 3;
+    flex-basis: 2;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin: 2% 0;
 }
 
 card {
@@ -53,4 +62,22 @@ card[draggable=true] {
 }
 card.outstanding {
     --color: red;
+}
+
+#game-dashboard {
+    overflow: auto;
+    border-right: 1px solid gray;
+    grid-column: 1 / 2;
+}
+
+.round {
+    border-bottom: 1px solid gray;
+}
+
+#round-management-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px solid gray;
 }
