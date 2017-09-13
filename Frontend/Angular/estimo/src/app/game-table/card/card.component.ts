@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation, Input } from '@angular/core';
 
-import { EstimationValue } from '../estimation-value';
+import { EstimationValue } from '../game';
 
 @Component({
     selector: 'card',

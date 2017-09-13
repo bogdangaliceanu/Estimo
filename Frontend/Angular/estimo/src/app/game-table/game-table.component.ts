@@ -6,7 +6,7 @@ import 'rxjs/add/operator/switchMap';
 import { OtherPlayer } from './other-player/other-player';
 import { DialogService, dialogServiceToken } from '../dialog.service';
 import { GameService, gameServiceToken } from './game.service';
-import { EstimationValue } from './estimation-value';
+import { Game, Round, Estimation, EstimationValue } from './game';
 
 @Component({
     selector: 'game-table',
@@ -16,8 +16,15 @@ import { EstimationValue } from './estimation-value';
 })
 export class GameTableComponent implements OnInit {
     private gameId: string;
+    game: Game;
     currentSubject: string;
     currentPlayerEstimation: EstimationValue;
+    otherPlayers: OtherPlayer[] = [
+        { name: 'Player1', estimate: { cardValue: '3', isOutstanding: true } },
+        { name: 'Player2', estimate: { cardValue: '8', isOutstanding: true } },
+        { name: 'Player3', estimate: { cardValue: '5', isOutstanding: false } },
+        { name: 'Player4', estimate: { cardValue: '?', isOutstanding: true } }
+    ];
     readonly cardValues = [
         { text: '0', value: EstimationValue.Zero },
         { text: '1/2', value: EstimationValue.Half },
@@ -42,8 +49,15 @@ export class GameTableComponent implements OnInit {
         @Inject(gameServiceToken) private gameService: GameService
     ) {}
 
-    ngOnInit() {
+    async ngOnInit() {
         this.gameId = this.getGameId();
+        const result = await this.gameService.get(this.gameId);
+        if (result.kind === 'success') {
+            this.game = result.data;
+        }
+        else {
+            this.dialogService.alert(result.data);
+        }
     }
 
     getGameId() {
@@ -51,13 +65,6 @@ export class GameTableComponent implements OnInit {
         this.route.paramMap.subscribe(pm => gameId = pm.get('id')).unsubscribe();
         return gameId;
     }
-
-    otherPlayers: OtherPlayer[] = [
-        { name: 'Player1', estimate: { cardValue: '3', isOutstanding: true } },
-        { name: 'Player2', estimate: { cardValue: '8', isOutstanding: true } },
-        { name: 'Player3', estimate: { cardValue: '5', isOutstanding: false } },
-        { name: 'Player4', estimate: { cardValue: '?', isOutstanding: true } }
-    ];
 
     async onCardSelected(ev: DragEvent, cardSlotArea: HTMLElement) {
         const cardValue = Number(ev.dataTransfer.getData('text')) as EstimationValue;

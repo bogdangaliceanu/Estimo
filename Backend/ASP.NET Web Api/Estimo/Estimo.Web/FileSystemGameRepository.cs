@@ -70,6 +70,10 @@ namespace Estimo.Web
         public async Task<Game> Get(Guid id)
         {
             var filePath = Path.Combine(directory, $"{id.ToString()}.json");
+            if (!File.Exists(filePath))
+            {
+                return null;
+            }
             using (var file = File.OpenRead(filePath))
             using (var reader = new StreamReader(file))
             {

@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import { GameService } from './game.service';
 import { AuthService, authServiceToken } from '../auth.service';
 import { Result } from '../result';
-import { EstimationValue } from './estimation-value';
+import { Game, EstimationValue } from './game';
 
 @Injectable()
 export class HttpGameService implements GameService {
@@ -70,6 +70,25 @@ export class HttpGameService implements GameService {
             }
             if (e.status == 403) {
                 return { kind: 'failure', data: e.text() };
+            }
+            return { kind: 'failure', data: 'An error has occured' };
+        }
+    }
+
+    async get(gameId: string): Promise<Result<Game, string>> {
+        try {
+            const headers = new Headers();
+            headers.append('X-Auth-Token', this.authService.authToken);
+
+            const url = `${environment.backendUrl}game/${gameId}`;
+            const response = await this.http.get(url, { headers: headers })
+                .toPromise();
+
+            return { kind: 'success', data: response.json() };
+        }
+        catch (e) {
+            if (e.status == 401) {
+                return { kind: 'failure', data: 'Access denied' };
             }
             return { kind: 'failure', data: 'An error has occured' };
         }

@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Estimo.Web.Models;
 
 namespace Estimo.Web
 {

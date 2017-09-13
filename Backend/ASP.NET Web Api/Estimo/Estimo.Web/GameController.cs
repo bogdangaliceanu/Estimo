@@ -4,6 +4,9 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Estimo.Web.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Estimo.Web
 {
@@ -11,6 +14,7 @@ namespace Estimo.Web
     public class GameController : ApiController
     {
         private static readonly object estimationLock = new object();
+        private static readonly JsonSerializerSettings camelCaseSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
         private readonly IGameRepository gameRepository;
 
@@ -91,9 +95,17 @@ namespace Estimo.Web
         }
 
         [HttpGet, Route("game/{id:guid}")]
-        public Task<Game> GetGame(Guid id)
+        public async Task<IHttpActionResult> GetGame(Guid id)
         {
-            return gameRepository.Get(id);
+            var game = await gameRepository.Get(id).ConfigureAwait(false);
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            var player = Thread.CurrentPrincipal.Identity.Name;
+            var model = GameModel.Build(game, player);
+            return Json(model, camelCaseSettings);
         }
     }
 }

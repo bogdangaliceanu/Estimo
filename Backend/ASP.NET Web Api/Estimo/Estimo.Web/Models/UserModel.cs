@@ -1,4 +1,4 @@
-﻿namespace Estimo.Web
+﻿namespace Estimo.Web.Models
 {
     public class UserModel
     {
