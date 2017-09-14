@@ -4,7 +4,7 @@
         <button (click)="finishRound()">Finish round</button>
     </div>
     <div class="round" *ngFor="let round of game?.rounds" (click)="selectedRound = round">
-        {{round.subject}}
+        {{round.subject}} ({{round.consensus}})
     </div>
 </div>
 <div id="table">

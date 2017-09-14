@@ -16,4 +16,17 @@ export class SessionStorageAuthService implements AuthService {
             sessionStorage.setItem('authToken', value);
         }
     }
+
+    get username() {
+        return sessionStorage.getItem('username');
+    }
+
+    set username(value: string) {
+        if (!value) {
+            sessionStorage.removeItem('username');
+        }
+        else {
+            sessionStorage.setItem('username', value);
+        }
+    }
 }

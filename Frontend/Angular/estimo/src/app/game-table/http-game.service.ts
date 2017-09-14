@@ -53,6 +53,28 @@ export class HttpGameService implements GameService {
         }
     }
 
+    async finishRound(gameId: string, consensus: EstimationValue): Promise<Result<null, string>> {
+        try {
+            const headers = new Headers();
+            headers.append('X-Auth-Token', this.authService.authToken);
+
+            const url = `${environment.backendUrl}game/${gameId}/round`;
+            const response = await this.http.put(url, { consensus: consensus }, { headers: headers })
+                .toPromise();
+
+            return { kind: 'success', data: null };
+        }
+        catch (e) {
+            if (e.status == 401) {
+                return { kind: 'failure', data: 'Access denied' };
+            }
+            if (e.status == 403) {
+                return { kind: 'failure', data: e.text() };
+            }
+            return { kind: 'failure', data: 'An error has occured' };
+        }
+    }
+
     async estimate(gameId: string, value: EstimationValue): Promise<Result<null, string>> {
         try {
             const headers = new Headers();

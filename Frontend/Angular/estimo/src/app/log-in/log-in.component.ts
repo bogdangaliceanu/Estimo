@@ -30,6 +30,7 @@ export class LogInComponent {
         }
         else {
             this.authService.authToken = result.data.authToken;
+            this.authService.username = this.user.username;
             await this.goToNextPage();
         }
     }

@@ -72,11 +72,11 @@ namespace Estimo.Web
         }
 
         [HttpPost, Route("game/{id:guid}/estimation")]
-        public HttpResponseMessage Estimate(Guid id, [FromBody] EstimationModel estimationModel)
+        public async Task<HttpResponseMessage> Estimate(Guid id, [FromBody] EstimationModel estimationModel)
         {
-            lock (estimationLock)
-            {
-                var game = gameRepository.Get(id).Result;
+            //lock (estimationLock)
+            //{
+                var game = await gameRepository.Get(id).ConfigureAwait(false);
                 var player = Thread.CurrentPrincipal.Identity.Name;
 
                 var estimation = new Estimation(estimationModel.Value, player);
@@ -91,7 +91,7 @@ namespace Estimo.Web
 
                 gameRepository.Update(game).Wait();
                 return new HttpResponseMessage(HttpStatusCode.OK);
-            }
+            //}
         }
 
         [HttpGet, Route("game/{id:guid}")]
