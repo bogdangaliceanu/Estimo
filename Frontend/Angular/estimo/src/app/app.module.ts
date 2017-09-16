@@ -21,6 +21,7 @@ import { HttpGameService } from './game-table/http-game.service';
 import { dialogServiceToken } from './dialog.service';
 import { BrowserDialogService } from './browser-dialog.service';
 import { AuthGuardService } from './auth-guard.service';
+import { EstimationSymbolPipe } from './game-table/estimation-symbol.pipe';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { AuthGuardService } from './auth-guard.service';
         SignUpComponent,
         LogInComponent,
         GameTableComponent,
-        CardSlotComponent
+        CardSlotComponent,
+        EstimationSymbolPipe
     ],
     imports: [
         BrowserModule,

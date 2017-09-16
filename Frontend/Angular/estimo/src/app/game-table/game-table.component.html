@@ -18,7 +18,7 @@
             </card-slot>
         </div>
         <div id="suite">
-            <card *ngFor="let cardValue of cardValues" [value]="cardValue.value" [text]="cardValue.text" [draggable]="!currentPlayerEstimation"
+            <card *ngFor="let cardValue of cardValues" [value]="cardValue.value" [draggable]="!currentPlayerEstimation"
                 (dragstart)="onDragStart($event, cardValue.value)">
             </card>
         </div>

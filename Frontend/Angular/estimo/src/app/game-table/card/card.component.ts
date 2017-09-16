@@ -10,5 +10,4 @@ import { EstimationValue } from '../game';
 })
 export class CardComponent {
     @Input() value: EstimationValue;
-    @Input() text: string;
 }
