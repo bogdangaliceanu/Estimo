@@ -13,6 +13,7 @@ import { User } from '../user';
 })
 export class SignUpComponent {
     readonly user = new User('', '');
+    confirmedPassword: string;
 
     constructor(
         @Inject(dialogServiceToken) private dialogService: DialogService,

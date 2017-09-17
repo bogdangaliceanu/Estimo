@@ -9,7 +9,7 @@ import { AuthService, authServiceToken } from './auth.service';
     encapsulation: ViewEncapsulation.Native
 })
 export class AppComponent {
-    constructor(@Inject(authServiceToken) private authService: AuthService) {}
+    constructor(@Inject(authServiceToken) public authService: AuthService) {}
 
     logOut() {
         this.authService.authToken = null;

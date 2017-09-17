@@ -12,7 +12,7 @@ import { GameService, gameServiceToken } from '../game-table/game.service';
 })
 export class HomeComponent {
     constructor(
-        @Inject(authServiceToken) private authService: AuthService,
+        @Inject(authServiceToken) public authService: AuthService,
         @Inject(gameServiceToken) private gameService: GameService,
         private router: Router
     ) {}
