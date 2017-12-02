@@ -9,7 +9,7 @@ namespace Estimo
         public string Subject { get; }
 
         private readonly Dictionary<string, Estimation> estimationsByPlayer;
-        public IEnumerable<Estimation> Estimations { get { return estimationsByPlayer.Values; } }
+        public IEnumerable<Estimation> Estimations => estimationsByPlayer.Values;
 
         public DateTimeOffset StartedAt { get; }
         public DateTimeOffset? FinishedAt { get; private set; }

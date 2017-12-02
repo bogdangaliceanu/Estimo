@@ -14,7 +14,7 @@ namespace Estimo.Web.Controllers
     [Route("game")]
     public class GameController : Controller
     {
-        private static readonly object estimationLock = new object();
+        private static readonly object gameLock = new object();
         private static readonly JsonSerializerSettings camelCaseSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
         private readonly IGameRepository gameRepository;
@@ -35,39 +35,45 @@ namespace Estimo.Web.Controllers
         }
 
         [HttpPost, Route("game/{id:guid}/round")]
-        public async Task<IActionResult> NewRound(Guid id, [FromBody] NewRoundModel roundModel)
+        public IActionResult NewRound(Guid id, [FromBody] NewRoundModel roundModel)
         {
-            var game = await gameRepository.Get(id).ConfigureAwait(false);
-            var player = User.Identity.Name;
-
-            if (game.NewRound(roundModel.Subject, player) is Failure<string> f)
+            lock (gameLock)
             {
-                return StatusCode((int)HttpStatusCode.Forbidden, f.Data);
-            }
+                var game = gameRepository.Get(id).Result;
+                var player = User.Identity.Name;
 
-            await gameRepository.Update(game).ConfigureAwait(false);
-            return Ok();
+                if (game.NewRound(roundModel.Subject, player) is Failure<string> f)
+                {
+                    return StatusCode((int)HttpStatusCode.Forbidden, f.Data);
+                }
+
+                gameRepository.Update(game).Wait();
+                return Ok();
+            }
         }
 
         [HttpPut, Route("game/{id:guid}/round")]
-        public async Task<IActionResult> FinishRound(Guid id, [FromBody] FinishedRoundModel roundModel)
+        public IActionResult FinishRound(Guid id, [FromBody] FinishedRoundModel roundModel)
         {
-            var game = await gameRepository.Get(id).ConfigureAwait(false);
-            var player = User.Identity.Name;
-
-            if (game.FinishCurrentRound(roundModel.Consensus, player) is Failure<string> f)
+            lock (gameLock)
             {
-                return StatusCode((int)HttpStatusCode.Forbidden, f.Data);
-            }
+                var game = gameRepository.Get(id).Result;
+                var player = User.Identity.Name;
 
-            await gameRepository.Update(game).ConfigureAwait(false);
-            return Ok();
+                if (game.FinishCurrentRound(roundModel.Consensus, player) is Failure<string> f)
+                {
+                    return StatusCode((int)HttpStatusCode.Forbidden, f.Data);
+                }
+
+                gameRepository.Update(game).Wait();
+                return Ok();
+            }
         }
 
         [HttpPost, Route("game/{id:guid}/estimation")]
         public IActionResult Estimate(Guid id, [FromBody] EstimationModel estimationModel)
         {
-            lock (estimationLock)
+            lock (gameLock)
             {
                 var game = gameRepository.Get(id).Result;
                 var player = User.Identity.Name;
