@@ -17,8 +17,8 @@ export class HttpGameService implements GameService {
     async newGame(): Promise<Result<{ gameId: string }, string>> {
         try {
             const headers = new Headers();
-            headers.append('X-Auth-Token', this.authService.authToken);
-            const response = await this.http.post(environment.backendUrl + 'game', null, { headers: headers }).toPromise();
+            headers.append('Authorization', `Bearer ${this.authService.authToken}`);
+            const response = await this.http.post(environment.backendUrl + 'game/game', null, { headers: headers }).toPromise();
             const gameId = response.headers.get('Location');
 
             return { kind: 'success', data: { gameId: gameId } };
@@ -34,9 +34,9 @@ export class HttpGameService implements GameService {
     async newRound(gameId: string, subject: string): Promise<Result<null, string>> {
         try {
             const headers = new Headers();
-            headers.append('X-Auth-Token', this.authService.authToken);
+            headers.append('Authorization', `Bearer ${this.authService.authToken}`);
 
-            const url = `${environment.backendUrl}game/${gameId}/round`;
+            const url = `${environment.backendUrl}game/game/${gameId}/round`;
             const response = await this.http.post(url, { subject: subject }, { headers: headers })
                 .toPromise();
 
@@ -56,9 +56,9 @@ export class HttpGameService implements GameService {
     async finishRound(gameId: string, consensus: EstimationValue): Promise<Result<null, string>> {
         try {
             const headers = new Headers();
-            headers.append('X-Auth-Token', this.authService.authToken);
+            headers.append('Authorization', `Bearer ${this.authService.authToken}`);
 
-            const url = `${environment.backendUrl}game/${gameId}/round`;
+            const url = `${environment.backendUrl}game/game/${gameId}/round`;
             const response = await this.http.put(url, { consensus: consensus }, { headers: headers })
                 .toPromise();
 
@@ -78,9 +78,9 @@ export class HttpGameService implements GameService {
     async estimate(gameId: string, value: EstimationValue): Promise<Result<null, string>> {
         try {
             const headers = new Headers();
-            headers.append('X-Auth-Token', this.authService.authToken);
+            headers.append('Authorization', `Bearer ${this.authService.authToken}`);
 
-            const url = `${environment.backendUrl}game/${gameId}/estimation`;
+            const url = `${environment.backendUrl}game/game/${gameId}/estimation`;
             const response = await this.http.post(url, { value: value }, { headers: headers })
                 .toPromise();
 
@@ -100,9 +100,9 @@ export class HttpGameService implements GameService {
     async get(gameId: string): Promise<Result<Game, string>> {
         try {
             const headers = new Headers();
-            headers.append('X-Auth-Token', this.authService.authToken);
+            headers.append('Authorization', `Bearer ${this.authService.authToken}`);
 
-            const url = `${environment.backendUrl}game/${gameId}`;
+            const url = `${environment.backendUrl}game/game/${gameId}`;
             const response = await this.http.get(url, { headers: headers })
                 .toPromise();
 

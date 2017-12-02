@@ -13,7 +13,7 @@ export class HttpUserService implements UserService {
 
     async signUp(user: User): Promise<string> {
         try {
-            await this.http.post(environment.backendUrl + 'signup', user).toPromise();
+            await this.http.post(environment.backendUrl + 'user/signup', user).toPromise();
         }
         catch (e) {
             if (e.status == 409) {
@@ -25,10 +25,9 @@ export class HttpUserService implements UserService {
 
     async logIn(user: User): Promise<Result<{ authToken: string }, string>> {
         try {
-            const response = await this.http.post(environment.backendUrl + 'login', user).toPromise();
-            const authToken = response.headers.get('X-Auth-Token');
+            const response = await this.http.post(environment.backendUrl + 'user/login', user).toPromise();
             
-            return { kind: 'success', data: { authToken: authToken } };
+            return { kind: 'success', data: { authToken: response.text() } };
         }
         catch (e) {
             if (e.status == 401) {
