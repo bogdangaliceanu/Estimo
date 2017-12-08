@@ -20,36 +20,36 @@ namespace Estimo.Web.Models
             {
                 public string Player { get; set; }
                 public EstimationValue? Value { get; set; }
+
+                public static EstimationModel Build(Estimation estimation)
+                {
+                    return new EstimationModel
+                    {
+                        Player = estimation.Player,
+                        Value = estimation.Value
+                    };
+                }
+            }
+
+            public static RoundModel Build(Round round)
+            {
+                return new RoundModel
+                {
+                    Subject = round.Subject,
+                    Estimations = round.Estimations.Select(EstimationModel.Build),
+                    Consensus = round.Consensus
+                };
             }
         }
 
-        public static GameModel Build(Game game, string player)
+        public static GameModel Build(Game game)
         {
             return new GameModel
             {
                 Id = game.Id,
                 Initiator = game.Initiator,
-                Rounds = game.Rounds.Select(r => HideUnfinishedRoundEstimations(r, player))
+                Rounds = game.Rounds.Select(RoundModel.Build)
             };
-        }
-
-        private static RoundModel HideUnfinishedRoundEstimations(Round round, string player)
-        {
-            return new RoundModel
-            {
-                Consensus = round.Consensus,
-                Estimations = round.Estimations.Select(e => new RoundModel.EstimationModel
-                {
-                    Player = e.Player,
-                    Value = CanValueBeSeen(round, e, player) ? e.Value : (EstimationValue?)null
-                }),
-                Subject = round.Subject
-            };
-        }
-
-        private static bool CanValueBeSeen(Round round, Estimation estimation, string player)
-        {
-            return round.Consensus.HasValue || player == estimation.Player;
         }
     }
 }

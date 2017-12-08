@@ -10,4 +10,5 @@ import { OtherPlayer } from './other-player';
 })
 export class OtherPlayerComponent {
     @Input() otherPlayer: OtherPlayer;
+    @Input() showEstimation: boolean;
 }

@@ -99,8 +99,7 @@ namespace Estimo.Web.Controllers
                 return NotFound();
             }
 
-            var player = User.Identity.Name;
-            var model = GameModel.Build(game, player);
+            var model = GameModel.Build(game);
             return Json(model, camelCaseSettings);
         }
     }

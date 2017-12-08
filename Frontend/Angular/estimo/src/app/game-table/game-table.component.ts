@@ -20,13 +20,9 @@ export class GameTableComponent implements OnInit {
     game: Game;
     selectedRound: Round;
     currentSubject: string;
-    currentPlayerEstimation: EstimationValue;
-    otherPlayers: OtherPlayer[] = [
-        { name: 'Player1', estimate: { cardValue: '3', isOutstanding: true } },
-        { name: 'Player2', estimate: { cardValue: '8', isOutstanding: true } },
-        { name: 'Player3', estimate: { cardValue: '5', isOutstanding: false } },
-        { name: 'Player4', estimate: { cardValue: '?', isOutstanding: true } }
-    ];
+    currentPlayerEstimationValue: EstimationValue;
+    isCurrentPlayerEstimationValueOutstanding: boolean;
+    otherPlayers: OtherPlayer[];
     cardValues = [
         { text: '0', value: EstimationValue.Zero },
         { text: '1/2', value: EstimationValue.Half },
@@ -49,26 +45,62 @@ export class GameTableComponent implements OnInit {
         @Inject(dialogServiceToken) private dialogService: DialogService,
         @Inject(gameServiceToken) private gameService: GameService,
         @Inject(authServiceToken) private authService: AuthService
-    ) {}
+    ) { }
 
     async ngOnInit() {
         this.gameId = this.getGameId();
         const result = await this.gameService.get(this.gameId);
         if (result.kind === 'success') {
             this.game = result.data;
-            this.showRound();
+            if (this.game.rounds.length) {
+                this.showRound(this.game.rounds.length - 1);
+            }
         }
         else {
             this.dialogService.alert(result.data);
         }
     }
 
-    showRound() {
-        if (this.game.rounds.length) {
-            this.selectedRound = this.game.rounds[this.game.rounds.length - 1];
-            this.currentPlayerEstimation = this.selectedRound.estimations.find(e => e.player == this.authService.username).value;
-            this.cardValues = this.cardValues.filter(c => c.value != this.currentPlayerEstimation);
+    showRound(index: number) {
+        this.selectedRound = this.game.rounds[index];
+
+        const currentPlayerEstimation = this.selectedRound.estimations.find(e => e.player == this.authService.username);
+        if (currentPlayerEstimation) {
+            this.currentPlayerEstimationValue = currentPlayerEstimation.value;
+            this.cardValues = this.cardValues.filter(c => c.value != this.currentPlayerEstimationValue);
         }
+
+        this.otherPlayers = this.getOtherPlayers();
+
+        this.determineOutstandingEstimations();
+    }
+
+    determineOutstandingEstimations() {
+        if (!this.selectedRound.consensus) {
+            return;
+        }
+
+        const minValue = this.selectedRound.estimations.reduce((v1, v2) => v1.value < v2.value ? v1 : v2).value;
+        const maxValue = this.selectedRound.estimations.reduce((v1, v2) => v1.value > v2.value ? v1 : v2).value;
+        
+        if (minValue != maxValue) {
+            this.isCurrentPlayerEstimationValueOutstanding = this.currentPlayerEstimationValue === minValue || this.currentPlayerEstimationValue === maxValue;
+
+            for (let otherPlayer of this.otherPlayers) {
+                otherPlayer.estimate.isOutstanding = otherPlayer.estimate.value === minValue || otherPlayer.estimate.value === maxValue;
+            }
+        }
+    }
+
+    getOtherPlayers() {
+        return this.selectedRound.estimations
+            .filter(e => e.player != this.authService.username)
+            .map(e => ({
+                name: e.player,
+                estimate: {
+                    value: e.value
+                }
+            }));
     }
 
     getGameId() {
@@ -82,8 +114,8 @@ export class GameTableComponent implements OnInit {
 
         const result = await this.gameService.estimate(this.gameId, cardValue);
         if (result.kind == "success") {
-            this.currentPlayerEstimation = cardValue;
-            this.cardValues = this.cardValues.filter(c => c.value != this.currentPlayerEstimation);
+            this.currentPlayerEstimationValue = cardValue;
+            this.cardValues = this.cardValues.filter(c => c.value != this.currentPlayerEstimationValue);
         }
         else {
             await this.dialogService.alert(result.data);
@@ -103,7 +135,7 @@ export class GameTableComponent implements OnInit {
         do {
             subject = await this.dialogService.prompt('What are you estimating?');
         }
-        while(!subject);
+        while (!subject);
 
         const result = await this.gameService.newRound(this.gameId, subject);
         if (result.kind === "success") {
@@ -121,7 +153,7 @@ export class GameTableComponent implements OnInit {
             const match = this.cardValues.find(v => v.text === consensusString);
             consensus = match ? match.value : null;
         }
-        while(!consensus);
+        while (!consensus);
 
         const result = await this.gameService.finishRound(this.gameId, consensus);
         if (result.kind === "success") {
