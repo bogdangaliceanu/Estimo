@@ -12,10 +12,11 @@
         <other-player *ngFor="let otherPlayer of otherPlayers" [otherPlayer]="otherPlayer"></other-player>
     </div>
     <div id="current-player-area">
-        <div id="card-slot-area" #cardSlotArea>
-            <card-slot *ngIf="!currentPlayerEstimation" title="Drag & drop a card here" (drop)="onCardSelected($event, cardSlotArea)"
-                (dragover)="allowDrop($event)">
+        <div id="card-slot-area">
+            <card-slot *ngIf="!currentPlayerEstimation" title="Drag & drop a card here"
+                (drop)="onCardSelected($event)" (dragover)="allowDrop($event)">
             </card-slot>
+            <card *ngIf="currentPlayerEstimation" [value]="currentPlayerEstimation"></card>
         </div>
         <div id="suite">
             <card *ngFor="let cardValue of cardValues" [value]="cardValue.value" [draggable]="!currentPlayerEstimation"

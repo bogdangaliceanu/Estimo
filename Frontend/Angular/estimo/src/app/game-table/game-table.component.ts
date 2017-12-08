@@ -27,7 +27,7 @@ export class GameTableComponent implements OnInit {
         { name: 'Player3', estimate: { cardValue: '5', isOutstanding: false } },
         { name: 'Player4', estimate: { cardValue: '?', isOutstanding: true } }
     ];
-    readonly cardValues = [
+    cardValues = [
         { text: '0', value: EstimationValue.Zero },
         { text: '1/2', value: EstimationValue.Half },
         { text: '1', value: EstimationValue.One },
@@ -42,7 +42,6 @@ export class GameTableComponent implements OnInit {
         { text: '∞', value: EstimationValue.Infinity },
         { text: '?', value: EstimationValue.Unknown }
     ];
-    cardBeingDragged: HTMLElement;
 
     constructor(
         private router: Router,
@@ -66,7 +65,9 @@ export class GameTableComponent implements OnInit {
 
     showRound() {
         if (this.game.rounds.length) {
-            this.selectedRound = this.game.rounds[this.game.rounds.length];
+            this.selectedRound = this.game.rounds[this.game.rounds.length - 1];
+            this.currentPlayerEstimation = this.selectedRound.estimations.find(e => e.player == this.authService.username).value;
+            this.cardValues = this.cardValues.filter(c => c.value != this.currentPlayerEstimation);
         }
     }
 
@@ -76,18 +77,17 @@ export class GameTableComponent implements OnInit {
         return gameId;
     }
 
-    async onCardSelected(ev: DragEvent, cardSlotArea: HTMLElement) {
+    async onCardSelected(ev: DragEvent) {
         const cardValue = Number(ev.dataTransfer.getData('text')) as EstimationValue;
-        this.currentPlayerEstimation = cardValue;
 
-        const result = await this.gameService.estimate(this.gameId, this.currentPlayerEstimation);
+        const result = await this.gameService.estimate(this.gameId, cardValue);
         if (result.kind == "success") {
-            cardSlotArea.appendChild(this.cardBeingDragged);
+            this.currentPlayerEstimation = cardValue;
+            this.cardValues = this.cardValues.filter(c => c.value != this.currentPlayerEstimation);
         }
         else {
             await this.dialogService.alert(result.data);
         }
-        this.cardBeingDragged = null;
     }
 
     allowDrop(ev: DragEvent) {
@@ -96,7 +96,6 @@ export class GameTableComponent implements OnInit {
 
     onDragStart(ev: DragEvent, cardValue: EstimationValue) {
         ev.dataTransfer.setData("text", cardValue.toString());
-        this.cardBeingDragged = ev.target as HTMLElement;
     }
 
     async newRound() {
