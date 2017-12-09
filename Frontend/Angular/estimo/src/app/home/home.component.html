@@ -1,3 +1,13 @@
 <div>Welcome to estimo!</div>
 <br />
 <button *ngIf="authService.authToken" (click)="newGame()">New game</button>
+<br />
+<br />
+<div *ngIf="authService.authToken && gameIds?.length">
+    Previous games:
+    <ul>
+        <li *ngFor="let gameId of gameIds">
+            <a routerLink="/game/{{gameId}}">{{gameId}}</a>
+        </li>
+    </ul>
+</div>

@@ -9,6 +9,7 @@ export interface GameService {
     finishRound(gameId: string, consensus: EstimationValue): Promise<Result<null, string>>;
     estimate(gameId: string, value: EstimationValue): Promise<Result<null, string>>;
     get(gameId: string): Promise<Result<Game, string>>;
+    getIds(): Promise<Result<string[], string>>;
 }
 
 export const gameServiceToken = new InjectionToken<GameService>('GameService');

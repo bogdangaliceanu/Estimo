@@ -11,20 +11,20 @@ using Microsoft.AspNetCore.Authorization;
 namespace Estimo.Web.Controllers
 {
     [Authorize]
-    [Route("game")]
-    public class GameController : Controller
+    [Route("games")]
+    public class GamesController : Controller
     {
         private static readonly object gameLock = new object();
         private static readonly JsonSerializerSettings camelCaseSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
         private readonly IGameRepository gameRepository;
 
-        public GameController(IGameRepository gameRepository)
+        public GamesController(IGameRepository gameRepository)
         {
             this.gameRepository = gameRepository;
         }
 
-        [HttpPost, Route("game")]
+        [HttpPost]
         public async Task<IActionResult> NewGame()
         {
             var player = User.Identity.Name;
@@ -34,7 +34,7 @@ namespace Estimo.Web.Controllers
             return Created(new Uri(game.Id.ToString(), UriKind.Relative), null);
         }
 
-        [HttpPost, Route("game/{id:guid}/round")]
+        [HttpPost, Route("{id:guid}/round")]
         public IActionResult NewRound(Guid id, [FromBody] NewRoundModel roundModel)
         {
             lock (gameLock)
@@ -52,7 +52,7 @@ namespace Estimo.Web.Controllers
             }
         }
 
-        [HttpPut, Route("game/{id:guid}/round")]
+        [HttpPut, Route("{id:guid}/round")]
         public IActionResult FinishRound(Guid id, [FromBody] FinishedRoundModel roundModel)
         {
             lock (gameLock)
@@ -70,7 +70,7 @@ namespace Estimo.Web.Controllers
             }
         }
 
-        [HttpPost, Route("game/{id:guid}/estimation")]
+        [HttpPost, Route("{id:guid}/estimation")]
         public IActionResult Estimate(Guid id, [FromBody] EstimationModel estimationModel)
         {
             lock (gameLock)
@@ -90,7 +90,7 @@ namespace Estimo.Web.Controllers
             }
         }
 
-        [HttpGet, Route("game/{id:guid}")]
+        [HttpGet, Route("{id:guid}")]
         public async Task<IActionResult> GetGame(Guid id)
         {
             var game = await gameRepository.Get(id).ConfigureAwait(false);
@@ -101,6 +101,12 @@ namespace Estimo.Web.Controllers
 
             var model = GameModel.Build(game);
             return Json(model, camelCaseSettings);
+        }
+
+        [HttpGet, Route("ids")]
+        public async Task<IActionResult> GetIds()
+        {
+            return Json(await gameRepository.GetIds(), camelCaseSettings);
         }
     }
 }

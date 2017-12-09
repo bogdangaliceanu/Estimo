@@ -15,13 +15,13 @@ using Microsoft.IdentityModel.Tokens;
 namespace Estimo.Web.Controllers
 {
     [AllowAnonymous]
-    [Route("user")]
-    public class UserController : Controller
+    [Route("users")]
+    public class UsersController : Controller
     {
         private readonly IUserRepository userRepository;
         private readonly JwtSettings jwtSettings;
 
-        public UserController(IUserRepository userRepository, IOptions<JwtSettings> jwtSettings)
+        public UsersController(IUserRepository userRepository, IOptions<JwtSettings> jwtSettings)
         {
             this.userRepository = userRepository;
             this.jwtSettings = jwtSettings.Value;

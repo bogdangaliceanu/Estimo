@@ -68,6 +68,15 @@ namespace Estimo.Web.Storage
             return await Task.WhenAll(ids.Select(Get));
         }
 
+        public Task<IEnumerable<Guid>> GetIds()
+        {
+            var ids = Directory.EnumerateFiles(this.directory)
+                .Select(Path.GetFileNameWithoutExtension)
+                .Select(Guid.Parse);
+
+            return Task.FromResult(ids);
+        }
+
         public async Task<Game> Get(Guid id)
         {
             var filePath = Path.Combine(directory, $"{id.ToString()}.json");

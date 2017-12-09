@@ -18,7 +18,7 @@ export class HttpGameService implements GameService {
         try {
             const headers = new Headers();
             headers.append('Authorization', `Bearer ${this.authService.authToken}`);
-            const response = await this.http.post(environment.backendUrl + 'game/game', null, { headers: headers }).toPromise();
+            const response = await this.http.post(environment.backendUrl + 'games', null, { headers: headers }).toPromise();
             const gameId = response.headers.get('Location');
 
             return { kind: 'success', data: { gameId: gameId } };
@@ -36,7 +36,7 @@ export class HttpGameService implements GameService {
             const headers = new Headers();
             headers.append('Authorization', `Bearer ${this.authService.authToken}`);
 
-            const url = `${environment.backendUrl}game/game/${gameId}/round`;
+            const url = `${environment.backendUrl}games/${gameId}/round`;
             const response = await this.http.post(url, { subject: subject }, { headers: headers })
                 .toPromise();
 
@@ -58,7 +58,7 @@ export class HttpGameService implements GameService {
             const headers = new Headers();
             headers.append('Authorization', `Bearer ${this.authService.authToken}`);
 
-            const url = `${environment.backendUrl}game/game/${gameId}/round`;
+            const url = `${environment.backendUrl}games/${gameId}/round`;
             const response = await this.http.put(url, { consensus: consensus }, { headers: headers })
                 .toPromise();
 
@@ -80,7 +80,7 @@ export class HttpGameService implements GameService {
             const headers = new Headers();
             headers.append('Authorization', `Bearer ${this.authService.authToken}`);
 
-            const url = `${environment.backendUrl}game/game/${gameId}/estimation`;
+            const url = `${environment.backendUrl}games/${gameId}/estimation`;
             const response = await this.http.post(url, { value: value }, { headers: headers })
                 .toPromise();
 
@@ -102,7 +102,26 @@ export class HttpGameService implements GameService {
             const headers = new Headers();
             headers.append('Authorization', `Bearer ${this.authService.authToken}`);
 
-            const url = `${environment.backendUrl}game/game/${gameId}`;
+            const url = `${environment.backendUrl}games/${gameId}`;
+            const response = await this.http.get(url, { headers: headers })
+                .toPromise();
+
+            return { kind: 'success', data: response.json() };
+        }
+        catch (e) {
+            if (e.status == 401) {
+                return { kind: 'failure', data: 'Access denied' };
+            }
+            return { kind: 'failure', data: 'An error has occured' };
+        }
+    }
+
+    async getIds(): Promise<Result<string[], string>> {
+        try {
+            const headers = new Headers();
+            headers.append('Authorization', `Bearer ${this.authService.authToken}`);
+
+            const url = `${environment.backendUrl}games/ids`;
             const response = await this.http.get(url, { headers: headers })
                 .toPromise();
 
