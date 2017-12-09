@@ -19,7 +19,6 @@ export class GameTableComponent implements OnInit {
     private gameId: string;
     game: Game;
     selectedRound: Round;
-    currentSubject: string;
     currentPlayerEstimationValue: EstimationValue;
     isCurrentPlayerEstimationValueOutstanding: boolean;
     otherPlayers: OtherPlayer[];
@@ -123,6 +122,7 @@ export class GameTableComponent implements OnInit {
         const result = await this.gameService.estimate(this.gameId, cardValue);
         if (result.kind == "success") {
             this.currentPlayerEstimationValue = cardValue;
+            this.selectedRound.estimations.push({ player: this.authService.username, value: cardValue });
             this.unusedCardValues = this.allCardValues.filter(c => c.value != this.currentPlayerEstimationValue);
         }
         else {
@@ -147,7 +147,9 @@ export class GameTableComponent implements OnInit {
 
         const result = await this.gameService.newRound(this.gameId, subject);
         if (result.kind === "success") {
-            this.currentSubject = subject;
+            const round: Round = { subject: subject, consensus: null, estimations: [] };
+            this.game.rounds.push(round);
+            this.selectRound(round);
         }
         else {
             await this.dialogService.alert(result.data);

@@ -1,7 +1,7 @@
 <div id="game-dashboard">
     <div id="round-management-container">
         <button (click)="newRound()">New round</button>
-        <button (click)="finishRound()">Finish round</button>
+        <button (click)="finishRound()" [disabled]="selectedRound?.consensus || !selectedRound?.estimations.length">Finish round</button>
     </div>
     <div class="round" *ngFor="let round of game?.rounds" (click)="selectRound(round)">
         {{round.subject}} <span *ngIf="round.consensus">({{round.consensus}})</span>

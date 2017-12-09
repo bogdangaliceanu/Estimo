@@ -85,3 +85,7 @@ card.outstanding {
     padding: 5px;
     border-bottom: 1px solid gray;
 }
+
+#round-management-container > button {
+    margin: 0px 2px;
+}
