@@ -1,8 +1,8 @@
 #card {
     border: 2px dashed var(--color, black);
-    width: var(--width);
-    height: var(--height);
-    font-size: var(--font-size);
+    width: var(--width, 80px);
+    height: var(--height, 100px);
+    font-size: var(--font-size, initial);
     display: flex;
     align-items: center;
     justify-content: center;

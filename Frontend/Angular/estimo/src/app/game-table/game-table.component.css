@@ -72,6 +72,10 @@ card.outstanding {
 
 .round {
     border-bottom: 1px solid gray;
+    padding: 2px;
+}
+.round:hover {
+    cursor: pointer;
 }
 
 #round-management-container {

@@ -3,8 +3,8 @@
         <button (click)="newRound()">New round</button>
         <button (click)="finishRound()">Finish round</button>
     </div>
-    <div class="round" *ngFor="let round of game?.rounds" (click)="selectedRound = round">
-        {{round.subject}} ({{round.consensus}})
+    <div class="round" *ngFor="let round of game?.rounds" (click)="selectRound(round)">
+        {{round.subject}} <span *ngIf="round.consensus">({{round.consensus}})</span>
     </div>
 </div>
 <div id="table">
@@ -19,7 +19,7 @@
             <card *ngIf="currentPlayerEstimationValue" [value]="currentPlayerEstimationValue" [class.outstanding]="isCurrentPlayerEstimationValueOutstanding"></card>
         </div>
         <div id="suite">
-            <card *ngFor="let cardValue of cardValues" [value]="cardValue.value" [draggable]="!currentPlayerEstimationValue"
+            <card *ngFor="let cardValue of unusedCardValues" [value]="cardValue.value" [draggable]="!currentPlayerEstimationValue"
                 (dragstart)="onDragStart($event, cardValue.value)">
             </card>
         </div>
